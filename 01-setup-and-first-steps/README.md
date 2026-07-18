@@ -658,6 +658,13 @@ The examples used `/plan` for a search feature and `-p` for batch reviews. Now t
 
 **Reflection**: Which mode felt most natural? When would you use each?
 
+**Interactive** felt most natural—the conversational back-and-forth caught edge cases organically.
+
+**When to use each:**
+- **Interactive**: Unclear requirements, need explanations, exploring
+- **Plan**: Complex features, need design sign-off, documentation required
+- **Programmatic**: Simple tasks, batch work, you know exactly what you want
+
 ---
 
 <details>

@@ -51,3 +51,26 @@ def test_remove_book_invalid():
     collection = BookCollection()
     result = collection.remove_book("Nonexistent Book")
     assert result is False
+
+def test_list_by_year():
+    collection = BookCollection()
+    collection.add_book("1984", "George Orwell", 1949)
+    collection.add_book("Animal Farm", "George Orwell", 1945)
+    collection.add_book("Brave New World", "Aldous Huxley", 1932)
+    collection.add_book("Nineteen Eighty-Four", "George Orwell", 1949)
+    
+    books_1949 = collection.list_by_year(1949)
+    assert len(books_1949) == 2
+    assert all(b.year == 1949 for b in books_1949)
+    
+    books_1945 = collection.list_by_year(1945)
+    assert len(books_1945) == 1
+    assert books_1945[0].title == "Animal Farm"
+
+def test_list_by_year_empty():
+    collection = BookCollection()
+    collection.add_book("1984", "George Orwell", 1949)
+    
+    books_2000 = collection.list_by_year(2000)
+    assert len(books_2000) == 0
+    assert books_2000 == []

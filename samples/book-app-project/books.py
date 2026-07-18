@@ -70,3 +70,7 @@ class BookCollection:
     def find_by_author(self, author: str) -> List[Book]:
         """Find all books by a given author."""
         return [b for b in self.books if b.author.lower() == author.lower()]
+
+    def list_by_year(self, year: int) -> List[Book]:
+        """Find all books published in a given year."""
+        return [b for b in self.books if b.year == year]
