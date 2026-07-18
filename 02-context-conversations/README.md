@@ -874,6 +874,8 @@ Then resume with: `copilot --continue`
 4. Practice using `/compact` to reclaim space, then continue the conversation
 5. Try being more specific with file references (e.g., `@samples/book-app-project/books.py` instead of the whole folder) and see how it affects context usage
 
+**Using specific file references** (e.g., `@samples/book-app-project/books.py`) reduces context size, improves response accuracy, and avoids pulling in irrelevant files. It gives Copilot a focused view instead of scanning entire folders.
+
 ---
 
 <details>
