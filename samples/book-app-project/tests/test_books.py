@@ -151,3 +151,38 @@ def test_list_by_year_empty() -> None:
     books_2000 = collection.list_by_year(2000)
     assert len(books_2000) == 0
     assert books_2000 == []
+
+
+def test_get_unread_books_returns_only_unread_books() -> None:
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
+    collection.mark_as_read("Dune")
+
+    unread_books = collection.get_unread_books()
+    assert [book.title for book in unread_books] == ["The Hobbit"]
+
+
+def test_get_unread_books_returns_empty_list_when_all_books_are_read() -> None:
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    collection.mark_as_read("Dune")
+
+    unread_books = collection.get_unread_books()
+    assert unread_books == []
+
+
+def test_get_unread_books_returns_empty_list_for_empty_collection() -> None:
+    collection = BookCollection()
+
+    unread_books = collection.get_unread_books()
+    assert unread_books == []
+
+
+def test_get_unread_books_returns_all_books_when_none_are_read() -> None:
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    collection.add_book("1984", "George Orwell", 1949)
+
+    unread_books = collection.get_unread_books()
+    assert [book.title for book in unread_books] == ["Dune", "1984"]
