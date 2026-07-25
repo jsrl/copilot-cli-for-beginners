@@ -26,6 +26,26 @@ def test_add_book():
     assert book.year == 1949
     assert book.read is False
 
+def test_add_book_returns_created_book():
+    collection = BookCollection()
+    created = collection.add_book("Dune", "Frank Herbert", 1965)
+    assert created.title == "Dune"
+    assert created.author == "Frank Herbert"
+    assert created.year == 1965
+    assert created.read is False
+    assert collection.books[-1] == created
+
+def test_add_book_persists_to_data_file():
+    collection = BookCollection()
+    collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
+
+    reloaded = BookCollection()
+    book = reloaded.find_book_by_title("The Hobbit")
+    assert book is not None
+    assert book.author == "J.R.R. Tolkien"
+    assert book.year == 1937
+    assert book.read is False
+
 def test_mark_book_as_read():
     collection = BookCollection()
     collection.add_book("Dune", "Frank Herbert", 1965)
@@ -33,6 +53,20 @@ def test_mark_book_as_read():
     assert result is True
     book = collection.find_book_by_title("Dune")
     assert book.read is True
+
+def test_mark_book_as_read_only_marks_matching_book():
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
+
+    result = collection.mark_as_read("Dune")
+    assert result is True
+    dune = collection.find_book_by_title("Dune")
+    hobbit = collection.find_book_by_title("The Hobbit")
+    assert dune is not None
+    assert hobbit is not None
+    assert dune.read is True
+    assert hobbit.read is False
 
 def test_mark_book_as_read_invalid():
     collection = BookCollection()

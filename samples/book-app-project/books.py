@@ -52,11 +52,13 @@ class BookCollection:
 
     def mark_as_read(self, title: str) -> bool:
         book = self.find_book_by_title(title)
-        if book:
+        if not book:
+            return False
+
+        if not book.read:
             book.read = True
             self.save_books()
-            return True
-        return False
+        return True
 
     def remove_book(self, title: str) -> bool:
         """Remove a book by title."""
