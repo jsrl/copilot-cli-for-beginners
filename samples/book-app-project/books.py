@@ -291,3 +291,29 @@ class BookCollection:
             1
         """
         return [b for b in self.books if b.year == year]
+
+    def list_by_year_range(self, start_year: int, end_year: int) -> List[Book]:
+        """Find all books published between two years (inclusive).
+
+        Args:
+            start_year (int): Inclusive start year.
+            end_year (int): Inclusive end year.
+
+        Returns:
+            List[Book]: Books where ``start_year <= year <= end_year``.
+
+        Raises:
+            ValueError: If either year is less than 1 or if ``start_year`` is
+                greater than ``end_year``.
+
+        Example:
+            >>> collection = BookCollection()
+            >>> _ = collection.add_book("Dune", "Frank Herbert", 1965)
+            >>> len(collection.list_by_year_range(1960, 1970))
+            1
+        """
+        if start_year < 1 or end_year < 1:
+            raise ValueError("Years must be greater than 0.")
+        if start_year > end_year:
+            raise ValueError("Start year must be less than or equal to end year.")
+        return [b for b in self.books if start_year <= b.year <= end_year]
