@@ -138,6 +138,20 @@ class BookCollection:
         """
         return self.books
 
+    def get_unread_books(self) -> List[Book]:
+        """Return all books that are currently unread.
+
+        Returns:
+            List[Book]: All books where ``read`` is ``False``.
+
+        Example:
+            >>> collection = BookCollection()
+            >>> _ = collection.add_book("Dune", "Frank Herbert", 1965)
+            >>> len(collection.get_unread_books())
+            1
+        """
+        return [book for book in self.books if not book.read]
+
     @staticmethod
     def _normalize_text(value: str) -> str:
         """Normalize user input for case-insensitive text matching.
