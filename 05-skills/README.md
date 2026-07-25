@@ -756,6 +756,8 @@ EOF
 
 **Self-Check**: You understand skills when you can explain why the `description` field matters (it's how Copilot decides whether to load your skill).
 
+**Sample answer**: The `description` is the skill's trigger guide. Copilot compares your prompt to that description to decide if the skill is relevant, so a clear, specific description helps the right skill load automatically and avoids false matches.
+
 ---
 
 ## 📝 Assignment
