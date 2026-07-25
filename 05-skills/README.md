@@ -43,6 +43,7 @@ Skills work the same way. Just like swapping drill bits for different jobs, you 
 | `security-audit` | Check for OWASP vulnerabilities |
 | `generate-tests` | Create comprehensive pytest tests |
 | `code-checklist` | Apply team code quality standards |
+| `quick-review` | Run a fast 3-point quality check |
 
 
 
