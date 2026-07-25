@@ -153,6 +153,41 @@ def test_list_by_year_empty() -> None:
     assert books_2000 == []
 
 
+def test_list_by_year_range_inclusive() -> None:
+    collection = BookCollection()
+    collection.add_book("Brave New World", "Aldous Huxley", 1932)
+    collection.add_book("1984", "George Orwell", 1949)
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    collection.add_book("Neuromancer", "William Gibson", 1984)
+
+    books_in_range = collection.list_by_year_range(1949, 1965)
+
+    assert [book.title for book in books_in_range] == ["1984", "Dune"]
+    assert all(1949 <= book.year <= 1965 for book in books_in_range)
+
+
+def test_list_by_year_range_returns_empty_when_no_books_match() -> None:
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+
+    books_in_range = collection.list_by_year_range(1970, 1980)
+
+    assert books_in_range == []
+
+
+def test_list_by_year_range_raises_for_invalid_input() -> None:
+    collection = BookCollection()
+
+    with pytest.raises(ValueError, match="Start year must be less than or equal to end year."):
+        collection.list_by_year_range(2000, 1999)
+
+    with pytest.raises(ValueError, match="Years must be greater than 0."):
+        collection.list_by_year_range(0, 2000)
+
+    with pytest.raises(ValueError, match="Years must be greater than 0."):
+        collection.list_by_year_range(2000, 0)
+
+
 def test_get_unread_books_returns_only_unread_books() -> None:
     collection = BookCollection()
     collection.add_book("Dune", "Frank Herbert", 1965)

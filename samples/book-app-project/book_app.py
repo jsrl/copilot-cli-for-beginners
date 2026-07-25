@@ -88,6 +88,22 @@ def handle_list_unread() -> None:
     show_books(books)
 
 
+def handle_list_between() -> None:
+    """Handle the list between command."""
+    print("\nFind Books Between Two Years\n")
+
+    while True:
+        start_year = _prompt_valid_year("Start year: ")
+        end_year = _prompt_valid_year("End year: ")
+        if start_year > end_year:
+            print("Start year must be less than or equal to end year.")
+            continue
+        break
+
+    books = collection.list_by_year_range(start_year, end_year)
+    show_books(books)
+
+
 def handle_add() -> None:
     """Handle the add command."""
     print("\nAdd a New Book\n")
@@ -127,6 +143,7 @@ Book Collection Helper
 Commands:
   list          - Show all books
   list unread   - Show only unread books
+  list between  - Show books published between two years
   add           - Add a new book
   remove        - Remove a book by title
   find          - Find books by author
@@ -147,8 +164,10 @@ def main() -> None:
             handle_list()
         elif len(sys.argv) == 3 and sys.argv[2].lower() == "unread":
             handle_list_unread()
+        elif len(sys.argv) == 3 and sys.argv[2].lower() == "between":
+            handle_list_between()
         else:
-            print("Unknown list option. Use 'list' or 'list unread'.\n")
+            print("Unknown list option. Use 'list', 'list unread', or 'list between'.\n")
             show_help()
     elif command == "add":
         handle_add()
