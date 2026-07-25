@@ -76,15 +76,40 @@ def test_mark_book_as_read_invalid():
 def test_remove_book():
     collection = BookCollection()
     collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
-    result = collection.remove_book("The Hobbit")
+    result, message = collection.remove_book("The Hobbit")
     assert result is True
+    assert message == "Removed 'The Hobbit' by J.R.R. Tolkien."
     book = collection.find_book_by_title("The Hobbit")
     assert book is None
 
-def test_remove_book_invalid():
+def test_remove_book_not_found_returns_feedback():
     collection = BookCollection()
-    result = collection.remove_book("Nonexistent Book")
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    result, message = collection.remove_book("Nonexistent Book")
     assert result is False
+    assert message == "Book 'Nonexistent Book' was not found."
+
+def test_remove_book_case_insensitive_and_trimmed_title():
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    result, message = collection.remove_book("  dUnE  ")
+    assert result is True
+    assert message == "Removed 'Dune' by Frank Herbert."
+    assert collection.find_book_by_title("Dune") is None
+
+def test_remove_book_returns_suggestion_for_partial_match():
+    collection = BookCollection()
+    collection.add_book("Dune Messiah", "Frank Herbert", 1969)
+    result, message = collection.remove_book("Dune")
+    assert result is False
+    assert message == "No exact match for 'Dune'. Did you mean: Dune Messiah?"
+    assert collection.find_book_by_title("Dune Messiah") is not None
+
+def test_remove_book_from_empty_collection():
+    collection = BookCollection()
+    result, message = collection.remove_book("Dune")
+    assert result is False
+    assert message == "Book 'Dune' was not found."
 
 def test_list_by_year():
     collection = BookCollection()

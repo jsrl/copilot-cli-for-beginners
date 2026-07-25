@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass, asdict
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 DATA_FILE = "data.json"
 
@@ -44,9 +44,14 @@ class BookCollection:
     def list_books(self) -> List[Book]:
         return self.books
 
+    @staticmethod
+    def _normalize_text(value: str) -> str:
+        return value.strip().casefold()
+
     def find_book_by_title(self, title: str) -> Optional[Book]:
+        normalized_title = self._normalize_text(title)
         for book in self.books:
-            if book.title.lower() == title.lower():
+            if self._normalize_text(book.title) == normalized_title:
                 return book
         return None
 
@@ -60,14 +65,31 @@ class BookCollection:
             self.save_books()
         return True
 
-    def remove_book(self, title: str) -> bool:
-        """Remove a book by title."""
-        book = self.find_book_by_title(title)
+    def remove_book(self, title: str) -> Tuple[bool, str]:
+        """Remove a book by title and return status feedback."""
+        normalized_title = self._normalize_text(title)
+        if not normalized_title:
+            return False, "Please provide a non-empty book title."
+
+        book = self.find_book_by_title(normalized_title)
         if book:
             self.books.remove(book)
             self.save_books()
-            return True
-        return False
+            return True, f"Removed '{book.title}' by {book.author}."
+
+        close_matches = [
+            b.title
+            for b in self.books
+            if normalized_title in self._normalize_text(b.title)
+        ]
+        if close_matches:
+            suggestions = ", ".join(close_matches[:3])
+            return (
+                False,
+                f"No exact match for '{title.strip()}'. Did you mean: {suggestions}?",
+            )
+
+        return False, f"Book '{title.strip()}' was not found."
 
     def find_by_author(self, author: str) -> List[Book]:
         """Find all books by a given author."""
